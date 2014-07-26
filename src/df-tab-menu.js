@@ -49,7 +49,8 @@
 					
 					// handle directive (such as ng-translate) that may change the size of the elements
 					var unregister = $scope.$watch(function() {
-						return root.querySelector('ol[main-menu].df-tab-menu > li[menu-item].df-tab-menu-active').scrollWidth;
+						var element = root.querySelector('ol[main-menu].df-tab-menu > li[menu-item].df-tab-menu-active');
+						return element != null ? element.scrollWidth : 0;
 					}, function(w, oldW) {
 						if(w != null && w > 0) {
 							getElementsSize();
@@ -147,6 +148,9 @@
 					angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).bind('click', toggleDropdown);
 					
 					$attrs.$observe('menuControl', function(c) {
+						if(root.querySelector('ol > li[menu-item=\"' + c + '\"]') == null) {
+							throw "Invalid state: " + c + ", please verify the menu-item(s) configuration";
+						}
 						//set active state
 						angular.element(root.querySelector('ol > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
 						angular.element(root.querySelector('ol > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
