@@ -65,7 +65,8 @@
 					
 					var getVisibleItems = function(_maxWidth, _activeItemIndex) {
 						var visibleItems = [];
-						var sum = elementsSize[_activeItemIndex] + getMoreElementSize();
+						//40px: scrollbar tolerance. Not proud of this, but it works...
+						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 40;
 						visibleItems.push(_activeItemIndex);
 						var items = root.querySelectorAll('ol > li[menu-item]');
 						for(var i = 0; i < items.length; i++) {
