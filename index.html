@@ -2,8 +2,8 @@
 <html>
 	<head>
 		<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
-		<script src="../src/df-tab-menu.js"></script>
-		<link rel="stylesheet" href="../css/df-tab-menu.css" type="text/css">
+		<script src="build/df-tab-menu.min.js"></script>
+		<link rel="stylesheet" href="css/df-tab-menu.css" type="text/css">
 		<style type="text/css">
 			body {
 				font-family: sans-serif;
@@ -20,7 +20,7 @@
 	</head>
 	<body>
 		<h1>df-tab-menu</h1>
-		<p>Responsive tabs with dropdown menu</p>
+		<p>Responsive tabs with dropdown menu.</p>
 		<div id="example" ng-app="digitalfondue.dftabmenu" ng-init="navigationState = 'home'">
 			<data-df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="navigationState = 'home'"><span>Home</span></a></li>
