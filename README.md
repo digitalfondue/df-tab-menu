@@ -6,6 +6,8 @@ Responsive tabs with dropdown menu
 ## Purpose
 Provide a reponsive tab menu that gracefully overflows into a dropdown.
 
+Demo: http://digitalfondue.ch/df-tab-menu/
+
 ## Usage
 
 ### Install
