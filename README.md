@@ -12,7 +12,7 @@ Provide a reponsive tab menu that gracefully overflows into a dropdown.
 
 * `$ bower install df-tab-menu`
 
-Once installed, add videosharing-embed as a dependency in your module:
+Once installed, add df-tab-menu as a dependency in your module:
 
 * `angular.module('myModule', ['digitalfondue.dftabmenu']);`
 
