@@ -2,7 +2,7 @@
 
 	'use strict';
 	
-	angular.module('digitalfondue.dftabmenu', []).directive('dfTabMenu', function($window) {
+	angular.module('digitalfondue.dftabmenu', []).directive('dfTabMenu', ['$window', function($window) {
 		return {
 			restrict : 'E',
 			compile: function($element, $attrs) {
@@ -171,5 +171,5 @@
 		     }
 		}
 		
-	});
+	}]);
 })();
