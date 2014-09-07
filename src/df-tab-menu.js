@@ -33,7 +33,6 @@
 					var root = $element[0];
 					var wdw = angular.element($window);
 					var currentDisplayItems = null;
-					var count = root.querySelectorAll('ol > li[menu-item]').length;
 					
 					var elementsSize = {};
 					var getElementsSize = function() {
@@ -92,14 +91,17 @@
 					}
 					
 					var buildMenu = function() {
+						console.log('build menu called');
 						var maxWidth = root.querySelector('ol').offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
-						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);;
-						if(visibleItems.length < count) {
+						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
+						
+						if(visibleItems.length < root.querySelectorAll('ol > li[menu-item]').length) {
 							currentDisplayItems = visibleItems.length;
 							angular.element(root.querySelector('ol > li[more-menu-item]')).removeClass('ng-hide');
 							
 							var elements = root.querySelectorAll('ol > li[menu-item]');
+							
 							var moreElements = root.querySelectorAll('ul[more-menu] > li[menu-item]');
 							for(var i = 0; i < elements.length; i++) {
 								if(visibleItems.indexOf(i) != -1) {
