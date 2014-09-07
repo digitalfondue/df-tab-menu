@@ -91,7 +91,6 @@
 					}
 					
 					var buildMenu = function() {
-						console.log('build menu called');
 						var maxWidth = root.querySelector('ol').offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
