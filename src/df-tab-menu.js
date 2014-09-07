@@ -131,6 +131,13 @@
 						}
 					};
 					
+					var closeDropdown = function(e) {
+						//$scope.$apply(function() {
+						dropdownOpen = false;
+						drawDropDown(e);
+						//});
+					};					
+					
 					var drawDropDown = function() {
 						if(dropdownOpen) {
 							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).addClass('df-tab-menu-dropdown-open');
@@ -144,12 +151,7 @@
 					//dropdown controls
 					//$scope.dropdownOpen = false;
 					
-					var closeDropdown = function() {
-						//$scope.$apply(function() {
-						dropdownOpen = false;
-						toggleDropdown();
-						//});
-					};
+					
 					
 					/*$scope.$watch('dropdownOpen', function(d) {
 						if(d) {
@@ -162,7 +164,7 @@
 					});*/
 					
 					var toggleDropdown = function(e) {
-						e.stopPropagation();
+						if(e) {e.stopPropagation()};
 						dropdownOpen = !dropdownOpen;
 						drawDropDown();
 						/*$scope.$apply(function() {
