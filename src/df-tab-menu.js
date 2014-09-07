@@ -2,7 +2,7 @@
 
 	'use strict';
 	
-	angular.module('digitalfondue.dftabmenu', []).directive('dfTabMenu', ['$window', function($window) {
+	angular.module('digitalfondue.dftabmenu', []).directive('dfTabMenu', ['$window','$timeout', function($window, $timeout) {
 		return {
 			restrict : 'E',
 			compile: function($element, $attrs) {
@@ -34,16 +34,18 @@
 					var wdw = angular.element($window);
 					var currentDisplayItems = null;
 					
-					var elementsSize = {};
+					//var elementsSize = [];
 					var getElementsSize = function() {
 						var elements = root.querySelectorAll('ol > li[menu-item]');
 						angular.element(elements).removeClass('ng-hide');
+						var elementsSize = [];
 						for(var e = 0;e < elements.length; e++) {
 							var size = elements[e].offsetWidth;
 							if(size > 0) {
 								elementsSize[e] = elements[e].offsetWidth;
 							}
 						};
+						return elementsSize;
 					}
 					
 					// handle directive (such as ng-translate) that may change the size of the elements
@@ -52,7 +54,7 @@
 						return element != null ? element.scrollWidth : 0;
 					}, function(w, oldW) {
 						if(w != null && w > 0) {
-							getElementsSize();
+							//getElementsSize();
 							buildMenu();
 						}
 					}, true);
@@ -64,6 +66,7 @@
 					
 					var getVisibleItems = function(_maxWidth, _activeItemIndex) {
 						var visibleItems = [];
+						var elementsSize = getElementsSize();
 						//40px: scrollbar tolerance. Not proud of this, but it works...
 						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 40;
 						visibleItems.push(_activeItemIndex);
@@ -90,7 +93,13 @@
 						}
 					}
 					
+					
+					//FIXME rate limit buildMenu
 					var buildMenu = function() {
+						//
+						//console.log('build menu');
+						//
+					
 						var maxWidth = root.querySelector('ol').offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
@@ -115,9 +124,11 @@
 							currentDisplayItems = null;
 							angular.element(root.querySelector('ol > li[more-menu-item]')).addClass('ng-hide');
 							angular.element(root.querySelectorAll('ol > li[menu-item]')).removeClass('ng-hide');
-							$scope.$evalAsync(function() {
+							
+							//FIXME (?)
+							/*$scope.$evalAsync(function() {
 								$scope.dropdownOpen = false;
-							});
+							});*/
 						}
 					};
 					
@@ -163,12 +174,14 @@
 		            });
 					
 					wdw.bind('resize', buildMenu);
-					
+
 					$scope.$on('$destroy', function() {
 						wdw.unbind('resize', buildMenu);
 						angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).unbind('click', toggleDropdown);
 						angular.element(doc).unbind('click', closeDropdown);
 					});
+					
+					$scope.$watch(buildMenu);
 				};
 		     }
 		}
