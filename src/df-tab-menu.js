@@ -33,6 +33,7 @@
 					var root = $element[0];
 					var wdw = angular.element($window);
 					var currentDisplayItems = null;
+					var dropdownOpen = false;
 					
 					//var elementsSize = [];
 					var getElementsSize = function() {
@@ -93,13 +94,9 @@
 						}
 					}
 					
-					
-					//FIXME rate limit buildMenu
 					var buildMenu = function() {
 						//
-						//console.log('build menu');
 						//
-					
 						var maxWidth = root.querySelector('ol').offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
@@ -125,6 +122,8 @@
 							angular.element(root.querySelector('ol > li[more-menu-item]')).addClass('ng-hide');
 							angular.element(root.querySelectorAll('ol > li[menu-item]')).removeClass('ng-hide');
 							
+							dropdownOpen = false;
+							drawDropDown();
 							//FIXME (?)
 							/*$scope.$evalAsync(function() {
 								$scope.dropdownOpen = false;
@@ -132,16 +131,27 @@
 						}
 					};
 					
-					//dropdown controls
-					$scope.dropdownOpen = false;
-					
-					var closeDropdown = function() {
-						$scope.$apply(function() {
-							$scope.dropdownOpen = false;
-						});
+					var drawDropDown = function() {
+						if(dropdownOpen) {
+							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).addClass('df-tab-menu-dropdown-open');
+							angular.element(doc).bind('click', closeDropdown);
+						} else {
+							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open');
+							angular.element(doc).unbind('click', closeDropdown);
+						}
 					};
 					
-					$scope.$watch('dropdownOpen', function(d) {
+					//dropdown controls
+					//$scope.dropdownOpen = false;
+					
+					var closeDropdown = function() {
+						//$scope.$apply(function() {
+						dropdownOpen = false;
+						toggleDropdown();
+						//});
+					};
+					
+					/*$scope.$watch('dropdownOpen', function(d) {
 						if(d) {
 							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).addClass('df-tab-menu-dropdown-open');
 							angular.element(doc).bind('click', closeDropdown);
@@ -149,13 +159,15 @@
 							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open');
 							angular.element(doc).unbind('click', closeDropdown);
 						}
-					});
+					});*/
 					
 					var toggleDropdown = function(e) {
 						e.stopPropagation();
-						$scope.$apply(function() {
+						dropdownOpen = !dropdownOpen;
+						drawDropDown();
+						/*$scope.$apply(function() {
 							$scope.dropdownOpen = !$scope.dropdownOpen;	
-						});
+						});*/
 					};
 					
 					angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).bind('click', toggleDropdown);
@@ -167,7 +179,7 @@
 						//set active state
 						angular.element(root.querySelector('ol > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
 						angular.element(root.querySelector('ol > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
-						$scope.dropdownOpen = false;
+						//$scope.dropdownOpen = false;
 						// force redrawing
 						currentDisplayItems = null;
 						buildMenu();
@@ -181,7 +193,12 @@
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 					
-					$scope.$watch(buildMenu);
+					
+					var buildMenuTimeout;
+					$scope.$watch(function() {
+						$timeout.cancel(buildMenuTimeout);
+						buildMenuTimeout = $timeout(buildMenu, 25, false);
+					});
 				};
 		     }
 		}
