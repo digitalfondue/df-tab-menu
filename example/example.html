@@ -21,8 +21,10 @@
 	</head>
 	<body>
 		<h1>df-tab-menu</h1>
-		<p>Responsive tabs with dropdown menu</p>
-		<div id="example" ng-app="digitalfondue.dftabmenu" ng-init="navigationState = 'home'">
+		<div id="example" ng-app="digitalfondue.dftabmenu" ng-init="navigationState = 'home';menu2 = {navigationState: 'home'}">
+			<h2>Static menu</h2>
+			<p>Responsive tabs with dropdown menu</p>
+			<p>navigation state: {{navigationState}}</p>
 			<data-df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="navigationState = 'home'"><span>Home</span></a></li>
 				<li menu-item="products"><a data-ng-href="#" data-ng-click="navigationState = 'products'"><span>Products</span></a></li>
@@ -32,6 +34,21 @@
 				<li menu-item="blog"><a data-ng-href="#" data-ng-click="navigationState = 'blog'"><span>Blog</span></a></li>
 				<li menu-item="contactus"><a data-ng-href="#" data-ng-click="navigationState = 'contactus'"><span>Contact Us</span></a></li>
 				<li menu-item="about"><a data-ng-href="#" data-ng-click="navigationState = 'about'"><span>About</span></a></li>
+			</data-df-tab-menu>
+			
+			<h2>Dynamic menu</h2>
+			<p>WORK IN PROGRESS, STILL BUGGED</p>
+			<div data-ng-init="allTags = [{'item' : 'first', 'name' : 'first'}, {'item' : 'second', 'name' : 'second'}, {'item' : 'third', 'name' : 'third'}, {'item' : 'fourth', 'name' : 'fourth'}]">
+				<ul style="margin:0;padding:0">
+					<li data-ng-repeat="tag in allTags">menu-item: <input data-ng-model="tag.item">, name: <input data-ng-model="tag.name"> <button data-ng-click="allTags.splice($index, 1)">delete</button>
+				</ul>
+				
+				<p>add new : menu-item: <input ng-model="tagToAdd.item">, name: <input ng-model="tagToAdd.name"> <button data-ng-click="allTags.push(tagToAdd);tagToAdd = null;">add</button></p>
+			</div>
+			navigation state 2: {{menu2.navigationState}}
+			<data-df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>">
+				<li menu-item="home"><a data-ng-href="#" data-ng-click="menu2.navigationState = 'home'"><span>Home</span></a></li>
+				<li data-ng-repeat="tag in allTags" menu-item="{{tag.item}}"><a data-ng-href="#" data-ng-click="menu2.navigationState = tag.item"><span>{{tag.name}}</span></a></li>
 			</data-df-tab-menu>
 		</div>
 	</body>
