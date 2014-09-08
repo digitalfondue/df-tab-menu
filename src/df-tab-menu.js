@@ -35,7 +35,6 @@
 					var currentDisplayItems = null;
 					var dropdownOpen = false;
 					
-					//var elementsSize = [];
 					var getElementsSize = function() {
 						var elements = root.querySelectorAll('ol > li[menu-item]');
 						angular.element(elements).removeClass('ng-hide');
@@ -55,7 +54,6 @@
 						return element != null ? element.scrollWidth : 0;
 					}, function(w, oldW) {
 						if(w != null && w > 0) {
-							//getElementsSize();
 							buildMenu();
 						}
 					}, true);
@@ -95,8 +93,6 @@
 					}
 					
 					var buildMenu = function() {
-						//
-						//
 						var maxWidth = root.querySelector('ol').offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
@@ -124,18 +120,12 @@
 							
 							dropdownOpen = false;
 							drawDropDown();
-							//FIXME (?)
-							/*$scope.$evalAsync(function() {
-								$scope.dropdownOpen = false;
-							});*/
 						}
 					};
 					
 					var closeDropdown = function(e) {
-						//$scope.$apply(function() {
 						dropdownOpen = false;
 						drawDropDown(e);
-						//});
 					};					
 					
 					var drawDropDown = function() {
@@ -149,27 +139,10 @@
 					};
 					
 					//dropdown controls
-					//$scope.dropdownOpen = false;
-					
-					
-					
-					/*$scope.$watch('dropdownOpen', function(d) {
-						if(d) {
-							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).addClass('df-tab-menu-dropdown-open');
-							angular.element(doc).bind('click', closeDropdown);
-						} else {
-							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open');
-							angular.element(doc).unbind('click', closeDropdown);
-						}
-					});*/
-					
 					var toggleDropdown = function(e) {
 						if(e) {e.stopPropagation()};
 						dropdownOpen = !dropdownOpen;
 						drawDropDown();
-						/*$scope.$apply(function() {
-							$scope.dropdownOpen = !$scope.dropdownOpen;	
-						});*/
 					};
 					
 					angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).bind('click', toggleDropdown);
@@ -181,7 +154,6 @@
 						//set active state
 						angular.element(root.querySelector('ol > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
 						angular.element(root.querySelector('ol > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
-						//$scope.dropdownOpen = false;
 						// force redrawing
 						currentDisplayItems = null;
 						buildMenu();
