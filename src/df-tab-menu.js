@@ -32,7 +32,6 @@
 				return function ($scope, $element, $attrs) {
 					var root = $element[0];
 					var wdw = angular.element($window);
-					var currentDisplayItems = null;
 					var dropdownOpen = false;
 					
 					var getElementsSize = function() {
@@ -98,7 +97,6 @@
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
 						
 						if(visibleItems.length < root.querySelectorAll('ol > li[menu-item]').length) {
-							currentDisplayItems = visibleItems.length;
 							angular.element(root.querySelector('ol > li[more-menu-item]')).removeClass('ng-hide');
 							
 							var elements = root.querySelectorAll('ol > li[menu-item]');
@@ -114,7 +112,6 @@
 								}
 							}
 						} else {
-							currentDisplayItems = null;
 							angular.element(root.querySelector('ol > li[more-menu-item]')).addClass('ng-hide');
 							angular.element(root.querySelectorAll('ol > li[menu-item]')).removeClass('ng-hide');
 							
@@ -151,13 +148,11 @@
 						//set active state
 						angular.element(root.querySelector('ol > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
 						angular.element(root.querySelector('ol > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
-						// force redrawing
-						currentDisplayItems = null;
 					}
 					
 					$attrs.$observe('menuControl', function(c) {
-						updateActiveState(c);
 						buildMenu();
+						updateActiveState(c);
 		            });
 					
 					wdw.bind('resize', buildMenu);

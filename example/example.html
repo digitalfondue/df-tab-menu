@@ -16,7 +16,7 @@
 			}
 		</style>
 		<!-- load JS after CSS to make sure the elements have the proper size -->
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular.min.js"></script>
 		<script src="../src/df-tab-menu.js"></script>
 	</head>
 	<body>
@@ -35,7 +35,7 @@
 				<li menu-item="about"><a data-ng-href="#" data-ng-click="navigationState = 'about'"><span>About</span></a></li>
 			</data-df-tab-menu>
 			
-			<p>navigation state: {{navigationState}}</p>
+			<p>navigation state: <input data-ng-model="navigationState"></p>
 			
 			<h2>Dynamic menu</h2>
 			<p>Using ng-repeat to create the menu</p>
@@ -44,7 +44,7 @@
 				<li data-ng-repeat="tag in allTags" menu-item="{{tag.item}}"><a data-ng-href="#" data-ng-click="menu2.navigationState = tag.item"><span>{{tag.name}}</span></a></li>
 			</data-df-tab-menu>
 			
-			<p>navigation state 2: {{menu2.navigationState}}</p>
+			<p>navigation state 2: <input data-ng-model="menu2.navigationState"></p>
 			
 			<div data-ng-init="allTags = [{'item' : 'first', 'name' : 'first'}, {'item' : 'second', 'name' : 'second'}, {'item' : 'third', 'name' : 'third'}, {'item' : 'fourth', 'name' : 'fourth'}]">
 				<ul style="margin:0;padding:0">
