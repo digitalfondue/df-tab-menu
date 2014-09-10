@@ -147,15 +147,16 @@
 					
 					angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).bind('click', toggleDropdown);
 					
-					$attrs.$observe('menuControl', function(c) {
-						if(root.querySelector('ol > li[menu-item=\"' + c + '\"]') == null) {
-							throw "Invalid state: " + c + ", please verify the menu-item(s) configuration";
-						}
+					var updateActiveState = function(c) {
 						//set active state
 						angular.element(root.querySelector('ol > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
 						angular.element(root.querySelector('ol > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
 						// force redrawing
 						currentDisplayItems = null;
+					}
+					
+					$attrs.$observe('menuControl', function(c) {
+						updateActiveState(c);
 						buildMenu();
 		            });
 					
@@ -171,7 +172,10 @@
 					var buildMenuTimeout;
 					$scope.$watch(function() {
 						$timeout.cancel(buildMenuTimeout);
-						buildMenuTimeout = $timeout(buildMenu, 25, false);
+						buildMenuTimeout = $timeout(function() {
+							buildMenu();
+							updateActiveState($attrs.menuControl);
+						}, 25, false);
 					});
 				};
 		     }
