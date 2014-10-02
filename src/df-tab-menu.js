@@ -8,8 +8,15 @@
 			compile: function($element, $attrs) {
 				var doc = $window.document;
 				var root = $element[0];
-				$element.append('<ol class=\"df-tab-menu\" main-menu></ol>');
-				var list = $element.find('ol');
+				
+				
+				var validBaseElements = {ol:'ol', ul:'ul'};
+				
+				var baseElement = (validBaseElements[$attrs.baseElement] || 'ol');
+				var baseElementSelector = baseElement+'[main-menu].df-tab-menu';
+				
+				$element.append('<' + baseElement + ' class=\"df-tab-menu\" main-menu></' + baseElement + '>');
+				var list = angular.element(root.querySelector(baseElementSelector));
 				
 				//move elements to the main menu
 				var elements = angular.element(root.querySelectorAll('li[menu-item]'));
@@ -17,14 +24,14 @@
 					list.append(elements[e]);
 				};
 				
-				$element.find('ol').append('<li more-menu-item>' +
+				angular.element(root.querySelector(baseElementSelector)).append('<li more-menu-item>' +
 						'<a href dropdown-toggle>' + 
 						$attrs.moreMenuTemplate + 
 						'</a><ul more-menu class=\"df-tab-menu-dropdown\"></ul></li>');
 				
 				//clone elements into the more menu
 				var moreList = angular.element(root.querySelector('ul.df-tab-menu-dropdown'));
-				var moreElements = root.querySelectorAll('ol > li[menu-item]');
+				var moreElements = root.querySelectorAll(baseElementSelector + ' > li[menu-item]');
 				for(var e = 0;e < elements.length; e++) {
 					moreList.append(angular.element(moreElements[e]).clone());
 				};
@@ -35,7 +42,7 @@
 					var dropdownOpen = false;
 					
 					var getElementsSize = function() {
-						var elements = root.querySelectorAll('ol > li[menu-item]');
+						var elements = root.querySelectorAll(baseElementSelector + ' > li[menu-item]');
 						angular.element(elements).removeClass('ng-hide');
 						var elementsSize = [];
 						for(var e = 0;e < elements.length; e++) {
@@ -49,7 +56,7 @@
 					
 					// handle directive (such as ng-translate) that may change the size of the elements
 					var unregister = $scope.$watch(function() {
-						var element = root.querySelector('ol[main-menu].df-tab-menu > li[menu-item].df-tab-menu-active');
+						var element = root.querySelector(baseElementSelector+' > li[menu-item].df-tab-menu-active');
 						return element != null ? element.scrollWidth : 0;
 					}, function(w, oldW) {
 						if(w != null && w > 0) {
@@ -58,8 +65,8 @@
 					}, true);
 					
 					var getMoreElementSize = function() {
-						angular.element(root.querySelector('ol > li[more-menu-item]')).removeClass('ng-hide');
-						return root.querySelector('ol[main-menu].df-tab-menu > li[more-menu-item]').offsetWidth;
+						angular.element(root.querySelector(baseElementSelector + ' > li[more-menu-item]')).removeClass('ng-hide');
+						return root.querySelector(baseElementSelector + ' > li[more-menu-item]').offsetWidth;
 					}
 					
 					var getVisibleItems = function(_maxWidth, _activeItemIndex) {
@@ -68,7 +75,7 @@
 						//40px: scrollbar tolerance. Not proud of this, but it works...
 						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 40;
 						visibleItems.push(_activeItemIndex);
-						var items = root.querySelectorAll('ol > li[menu-item]');
+						var items = root.querySelectorAll(baseElementSelector + ' > li[menu-item]');
 						for(var i = 0; i < items.length; i++) {
 							if(i != _activeItemIndex) {
 								sum += elementsSize[i];
@@ -83,7 +90,7 @@
 					};
 					
 					var getActiveItemIndex = function() {
-						var items = root.querySelectorAll('ol > li[menu-item]');
+						var items = root.querySelectorAll(baseElementSelector + ' > li[menu-item]');
 						for(var i = 0; i < items.length; i++) {
 							if(angular.element(items[i]).hasClass('df-tab-menu-active')) {
 								return i;
@@ -92,14 +99,14 @@
 					}
 					
 					var buildMenu = function() {
-						var maxWidth = root.querySelector('ol').offsetWidth;
+						var maxWidth = root.querySelector(baseElementSelector).offsetWidth;
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
 						
-						if(visibleItems.length < root.querySelectorAll('ol > li[menu-item]').length) {
-							angular.element(root.querySelector('ol > li[more-menu-item]')).removeClass('ng-hide');
+						if(visibleItems.length < root.querySelectorAll(baseElementSelector + ' > li[menu-item]').length) {
+							angular.element(root.querySelector(baseElementSelector + ' > li[more-menu-item]')).removeClass('ng-hide');
 							
-							var elements = root.querySelectorAll('ol > li[menu-item]');
+							var elements = root.querySelectorAll(baseElementSelector + ' > li[menu-item]');
 							
 							var moreElements = root.querySelectorAll('ul[more-menu] > li[menu-item]');
 							for(var i = 0; i < elements.length; i++) {
@@ -112,8 +119,8 @@
 								}
 							}
 						} else {
-							angular.element(root.querySelector('ol > li[more-menu-item]')).addClass('ng-hide');
-							angular.element(root.querySelectorAll('ol > li[menu-item]')).removeClass('ng-hide');
+							angular.element(root.querySelector(baseElementSelector + ' > li[more-menu-item]')).addClass('ng-hide');
+							angular.element(root.querySelectorAll(baseElementSelector + ' > li[menu-item]')).removeClass('ng-hide');
 							
 							dropdownOpen = false;
 							drawDropDown();
@@ -146,8 +153,8 @@
 					
 					var updateActiveState = function(c) {
 						//set active state
-						angular.element(root.querySelector('ol > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
-						angular.element(root.querySelector('ol > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
+						angular.element(root.querySelector(baseElementSelector + ' > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
+						angular.element(root.querySelector(baseElementSelector + ' > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
 					}
 					
 					$attrs.$observe('menuControl', function(c) {

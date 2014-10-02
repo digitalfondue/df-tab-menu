@@ -24,7 +24,7 @@
 		<div id="example" ng-app="digitalfondue.dftabmenu" ng-init="navigationState = 'home';menu2 = {navigationState: 'home'}">
 			<h2>Static menu</h2>
 			<p>Responsive tabs with dropdown menu</p>
-			<data-df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>">
+			<data-df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>" base-element="ul">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="navigationState = 'home'"><span>Home</span></a></li>
 				<li menu-item="products"><a data-ng-href="#" data-ng-click="navigationState = 'products'"><span>Products</span></a></li>
 				<li menu-item="gallery"><a data-ng-href="#" data-ng-click="navigationState = 'gallery'"><span>Gallery</span></a></li>
