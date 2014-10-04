@@ -39,7 +39,7 @@
 			
 			<h2>Dynamic menu</h2>
 			<p>Using ng-repeat to create the menu</p>
-			<data-df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>">
+			<data-df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>" theme="bootstrap">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="menu2.navigationState = 'home'"><span>Home</span></a></li>
 				<li data-ng-repeat="tag in allTags" menu-item="{{tag.item}}"><a data-ng-href="#" data-ng-click="menu2.navigationState = tag.item"><span>{{tag.name}}</span></a></li>
 			</data-df-tab-menu>
