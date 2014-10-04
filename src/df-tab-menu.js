@@ -9,13 +9,18 @@
 				var doc = $window.document;
 				var root = $element[0];
 				
+				var addBootstrapTheme = $attrs.theme === 'bootstrap';
+				
+				function bootstrap(s) {
+					return addBootstrapTheme ? s : '';
+				}
 				
 				var validBaseElements = {ol:'ol', ul:'ul'};
 				
 				var baseElement = (validBaseElements[$attrs.baseElement] || 'ol');
 				var baseElementSelector = baseElement+'[main-menu].df-tab-menu';
 				
-				$element.append('<' + baseElement + ' class=\"df-tab-menu\" main-menu></' + baseElement + '>');
+				$element.append('<' + baseElement + ' class=\"df-tab-menu '+bootstrap('nav nav-tabs')+'\" main-menu></' + baseElement + '>');
 				var list = angular.element(root.querySelector(baseElementSelector));
 				
 				//move elements to the main menu
@@ -24,10 +29,10 @@
 					list.append(elements[e]);
 				};
 				
-				angular.element(root.querySelector(baseElementSelector)).append('<li more-menu-item>' +
-						'<a href dropdown-toggle>' + 
+				angular.element(root.querySelector(baseElementSelector)).append('<li more-menu-item '+bootstrap('class="dropdown"')+'>' +
+						'<a href dropdown-toggle class="dropdown-toggle">' + 
 						$attrs.moreMenuTemplate + 
-						'</a><ul more-menu class=\"df-tab-menu-dropdown\"></ul></li>');
+						'</a><ul more-menu class=\"df-tab-menu-dropdown '+bootstrap('dropdown-menu')+'\"></ul></li>');
 				
 				//clone elements into the more menu
 				var moreList = angular.element(root.querySelector('ul.df-tab-menu-dropdown'));
@@ -134,9 +139,15 @@
 					
 					var drawDropDown = function() {
 						if(dropdownOpen) {
+							if(addBootstrapTheme) {
+								angular.element(root.querySelector('li[more-menu-item]')).addClass('open');
+							}
 							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).addClass('df-tab-menu-dropdown-open');
 							angular.element(doc).bind('click', closeDropdown);
 						} else {
+							if(addBootstrapTheme) {
+								angular.element(root.querySelector('li[more-menu-item]')).removeClass('open');
+							}
 							angular.element(root.querySelector('.df-tab-menu a[dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open');
 							angular.element(doc).unbind('click', closeDropdown);
 						}
@@ -153,8 +164,13 @@
 					
 					var updateActiveState = function(c) {
 						//set active state
-						angular.element(root.querySelector(baseElementSelector + ' > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
-						angular.element(root.querySelector(baseElementSelector + ' > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
+						var e1 = angular.element(root.querySelector(baseElementSelector + ' > li.df-tab-menu-active')).removeClass('df-tab-menu-active');
+						var e2 = angular.element(root.querySelector(baseElementSelector + ' > li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active');
+						
+						if(addBootstrapTheme) {
+							e1.removeClass('active');
+							e2.addClass('active');
+						}
 					}
 					
 					$attrs.$observe('menuControl', function(c) {
