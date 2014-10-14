@@ -1,13 +1,12 @@
 <!doctype html>
 <html>
 	<head>
-		<link rel="stylesheet" href="css/df-tab-menu.css" type="text/css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 		<style type="text/css">
 			body {
 				font-family: sans-serif;
 				font-style: normal;
 				font-variant: normal;
-				background-color: #e5e5e5;
 				font-size: 14px;
 			}
 			
@@ -22,14 +21,14 @@
 	<body>
 		<h1>df-tab-menu</h1>
 		
-		<a href="bootstrap.html">See the bootstrap theme</a>
+		<a href="index.html">See the default theme</a>
 		
 		<div id="example" ng-app="digitalfondue.dftabmenu" ng-init="navigationState = 'home';menu2 = {navigationState: 'home'}">
 			<h2>Static menu</h2>
 			<p>Responsive tabs with dropdown menu</p>
 			
 			
-			<ol df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>">
+			<ol df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>" theme="bootstrap">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="navigationState = 'home'"><span>Home</span></a></li>
 				<li menu-item="products"><a data-ng-href="#" data-ng-click="navigationState = 'products'"><span>Products</span></a></li>
 				<li menu-item="gallery"><a data-ng-href="#" data-ng-click="navigationState = 'gallery'"><span>Gallery</span></a></li>
@@ -44,7 +43,7 @@
 			
 			<h2>Dynamic menu</h2>
 			<p>Using ng-repeat to create the menu</p>
-			<ol df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>">
+			<ol df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>"  theme="bootstrap">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="menu2.navigationState = 'home'"><span>Home</span></a></li>
 				<li data-ng-repeat="tag in allTags" menu-item="{{tag.item}}"><a data-ng-href="#" data-ng-click="menu2.navigationState = tag.item"><span>{{tag.name}}</span></a></li>
 			</ol>
