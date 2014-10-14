@@ -24,7 +24,7 @@
 		<div id="example" ng-app="digitalfondue.dftabmenu" ng-init="navigationState = 'home';menu2 = {navigationState: 'home'}">
 			<h2>Static menu</h2>
 			<p>Responsive tabs with dropdown menu</p>
-			<data-df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>" base-element="ul">
+			<ol df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="navigationState = 'home'"><span>Home</span></a></li>
 				<li menu-item="products"><a data-ng-href="#" data-ng-click="navigationState = 'products'"><span>Products</span></a></li>
 				<li menu-item="gallery"><a data-ng-href="#" data-ng-click="navigationState = 'gallery'"><span>Gallery</span></a></li>
@@ -33,16 +33,16 @@
 				<li menu-item="blog"><a data-ng-href="#" data-ng-click="navigationState = 'blog'"><span>Blog</span></a></li>
 				<li menu-item="contactus"><a data-ng-href="#" data-ng-click="navigationState = 'contactus'"><span>Contact Us</span></a></li>
 				<li menu-item="about"><a data-ng-href="#" data-ng-click="navigationState = 'about'"><span>About</span></a></li>
-			</data-df-tab-menu>
+			</ol>
 			
 			<p>navigation state: <input data-ng-model="navigationState"></p>
 			
 			<h2>Dynamic menu</h2>
 			<p>Using ng-repeat to create the menu</p>
-			<data-df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>">
+			<ul df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>">
 				<li menu-item="home"><a data-ng-href="#" data-ng-click="menu2.navigationState = 'home'"><span>Home</span></a></li>
 				<li data-ng-repeat="tag in allTags" menu-item="{{tag.item}}"><a data-ng-href="#" data-ng-click="menu2.navigationState = tag.item"><span>{{tag.name}}</span></a></li>
-			</data-df-tab-menu>
+			</ul>
 			
 			<p>navigation state 2: <input data-ng-model="menu2.navigationState"></p>
 			
