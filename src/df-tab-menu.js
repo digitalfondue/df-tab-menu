@@ -103,6 +103,7 @@
 								return i;
 							}
 						}
+						return 0;//fallback
 					}
 					
 					var buildMenu = function() {
