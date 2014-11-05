@@ -23,22 +23,34 @@
 				
 				angular.element(root).attr('role','tablist').addClass('df-tab-menu ' + bootstrap('nav nav-tabs'));
 				
-				//add additional menu
-				angular.element(root).append('<li role=\"more-menu-toggle\" '+bootstrap('class="dropdown"')+'>' +
-						'<a href dropdown-toggle class="dropdown-toggle">' + 
-						$attrs.moreMenuTemplate + 
-						'</a><' + baseTag + ' role=\"more-menu\" class=\"df-tab-menu-dropdown '+bootstrap('dropdown-menu')+'\"></' + baseTag + '></li>');
+				var moreMenuElement = angular.element(root.querySelector('li[data-more-menu-item]'));
+				moreMenuElement.attr({
+						"role":"presentation"
+				});
+				moreMenuElement.addClass(bootstrap('dropdown'));
+				
+				moreMenuElement.children().attr({
+						"dropdown-toggle":"",
+						"aria-haspopup":"true",
+						"aria-expanded":"false"
+				});
+				moreMenuElement.children().addClass('dropdown-toggle');
+				
+				moreMenuElement.append('<' + baseTag + ' role=\"menu\" aria-hidden=\"true\" class=\"df-tab-menu-dropdown '+bootstrap('dropdown-menu')+'\"></' + baseTag + '>');
 				
 				//clone elements into the more menu, and add aria tags
 				var moreList = angular.element(root.querySelector('.df-tab-menu-dropdown'));
-				var moreElements = root.querySelectorAll('li[menu-item]');
+				var moreElements = root.querySelectorAll('li[data-menu-item]');
 				var elements = angular.element(moreElements);
 				for(var e = 0;e < elements.length; e++) {
 					var newElement = angular.element(moreElements[e]).clone();
-					newElement.attr({"role":"more-menu-item"});
+					newElement.attr({"role":"menuitem"});
 					moreList.append(newElement);
 					
 					angular.element(moreElements[e]).attr({
+						"role":"presentation"});
+					
+					angular.element(moreElements[e]).children().attr({
 						"aria-selected":"false",
 						"role":"tab"});
 				};
@@ -49,7 +61,7 @@
 					var dropdownOpen = false;
 					
 					var getElementsSize = function() {
-						var elements = root.querySelectorAll('li[role=tab]');
+						var elements = root.querySelectorAll('li[data-menu-item][role=presentation]');
 						angular.element(elements).removeClass('ng-hide');
 						var elementsSize = [];
 						for(var e = 0;e < elements.length; e++) {
@@ -63,7 +75,7 @@
 					
 					// handle directive (such as ng-translate) that may change the size of the elements
 					var unregister = $scope.$watch(function() {
-						var element = root.querySelector('li[role=tab].df-tab-menu-active');
+						var element = root.querySelector('li[role=presentation].df-tab-menu-active');
 						return element != null ? element.scrollWidth : 0;
 					}, function(w, oldW) {
 						if(w != null && w > 0) {
@@ -72,8 +84,8 @@
 					}, true);
 					
 					var getMoreElementSize = function() {
-						angular.element(root.querySelector('li[role=more-menu-toggle]')).removeClass('ng-hide');
-						return root.querySelector('li[role=more-menu-toggle]').offsetWidth;
+						angular.element(root.querySelector('li[data-more-menu-item]')).removeClass('ng-hide');
+						return root.querySelector('li[data-more-menu-item]').offsetWidth;
 					}
 					
 					var getVisibleItems = function(_maxWidth, _activeItemIndex) {
@@ -82,7 +94,7 @@
 						//40px: scrollbar tolerance. Not proud of this, but it works...
 						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 40;
 						visibleItems.push(_activeItemIndex);
-						var items = root.querySelectorAll('li[role=tab]');
+						var items = root.querySelectorAll('li[data-menu-item][role=presentation]');
 						for(var i = 0; i < items.length; i++) {
 							if(i != _activeItemIndex) {
 								sum += elementsSize[i];
@@ -97,7 +109,7 @@
 					};
 					
 					var getActiveItemIndex = function() {
-						var items = root.querySelectorAll('li[role=tab]');
+						var items = root.querySelectorAll('li[data-menu-item][role=presentation]');
 						for(var i = 0; i < items.length; i++) {
 							if(angular.element(items[i]).hasClass('df-tab-menu-active')) {
 								return i;
@@ -111,11 +123,11 @@
 						var activeItemIndex = getActiveItemIndex();
 						var visibleItems = getVisibleItems(maxWidth, activeItemIndex);
 						
-						var elements = root.querySelectorAll('li[role=tab]');
-						var moreElements = root.querySelectorAll('li[role=more-menu-item]');
-						var moreMenuToggle = root.querySelector('li[role=more-menu-toggle]');
+						var elements = root.querySelectorAll('li[data-menu-item][role=presentation]');
+						var moreElements = root.querySelectorAll('li[role=menuitem]');
+						var moreMenuToggle = root.querySelector('li[data-more-menu-item]');
 						
-						if(visibleItems.length < root.querySelectorAll('li[role=tab]').length) {
+						if(visibleItems.length < root.querySelectorAll('li[data-menu-item][role=presentation]').length) {
 							angular.element(moreMenuToggle).removeClass('ng-hide').attr('aria-hidden','false');
 							
 							for(var i = 0; i < elements.length; i++) {
@@ -145,15 +157,15 @@
 					var drawDropDown = function() {
 						if(dropdownOpen) {
 							if(addBootstrapTheme) {
-								angular.element(root.querySelector('li[role=more-menu-toggle]')).addClass('open');
+								angular.element(root.querySelector('li[data-more-menu-item]')).addClass('open');
 							}
-							angular.element(root.querySelector('li[role=more-menu-toggle] a[dropdown-toggle]')).addClass('df-tab-menu-dropdown-open');
+							angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).addClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'true'});
 							angular.element(doc).bind('click', closeDropdown);
 						} else {
 							if(addBootstrapTheme) {
-								angular.element(root.querySelector('li[role=more-menu-toggle]')).removeClass('open');
+								angular.element(root.querySelector('li[data-more-menu-item]')).removeClass('open');
 							}
-							angular.element(root.querySelector('li[role=more-menu-toggle] a[dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open');
+							angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'false'});;
 							angular.element(doc).unbind('click', closeDropdown);
 						}
 					};
@@ -165,12 +177,14 @@
 						drawDropDown();
 					};
 					
-					angular.element(root.querySelector('li[role=more-menu-toggle] a[dropdown-toggle]')).bind('click', toggleDropdown);
+					angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).bind('click', toggleDropdown);
 					
 					var updateActiveState = function(c) {
 						//set active state
-						var e1 = angular.element(root.querySelector('li.df-tab-menu-active')).removeClass('df-tab-menu-active').attr('aria-selected','false');
-						var e2 = angular.element(root.querySelector('li[menu-item=\"' + c + '\"]')).addClass('df-tab-menu-active').attr('aria-selected','true');
+						var e1 = angular.element(root.querySelector('li.df-tab-menu-active')).removeClass('df-tab-menu-active');
+						e1.children().attr('aria-selected','false');
+						var e2 = angular.element(root.querySelector('li[data-menu-item=\"' + c + '\"][role=presentation]')).addClass('df-tab-menu-active');
+						e2.children().attr('aria-selected','true');
 						
 						if(addBootstrapTheme) {
 							e1.removeClass('active');
@@ -187,7 +201,7 @@
 
 					$scope.$on('$destroy', function() {
 						wdw.unbind('resize', buildMenu);
-						angular.element(root.querySelector('li[role=more-menu-toggle] a[dropdown-toggle]')).unbind('click', toggleDropdown);
+						angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).unbind('click', toggleDropdown);
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 					
