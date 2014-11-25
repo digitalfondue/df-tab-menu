@@ -26,14 +26,15 @@ Once installed, add df-tab-menu as a dependency in your module:
 
 Example
 ```html
-<ol df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>">
-	<li menu-item="state1"><a data-ng-href="#"><span>Item 1</span></a></li>
-	<li menu-item="state2"><a data-ng-href="#"><span>Item 2</span></a></li>
+<ol df-tab-menu menu-control="{{navigationState}}">
+	<li data-menu-item="state1"><a data-ng-href="#"><span>Item 1</span></a></li>
+	<li data-menu-item="state2"><a data-ng-href="#"><span>Item 2</span></a></li>
+	<li data-more-menu-item><a data-ng-href="#">More +</a></li>
 </ol>
 ```
 
 * only **ol** and **ul** are valid root elements
 * **menu-control** is used to control which tab item is the current one. It can be anything available in your scope. Example: using ui-router state name `$scope.navigationState = $state.current.name;`
-* **more-menu-template** is how you want to display the overflow item
-* each **menu-item** refers to a possible state provided by **menu-control**. If a state is invalid, an exception is throw, and the directive will fail to render correctly
+* each **data-menu-item** refers to a possible state provided by **menu-control**. If a state is invalid, an exception is throw, and the directive will fail to render correctly
+* **data-more-menu-item** is used to generate the dropdown entry when that contains the menu items overflow. 
 * bootstrap tab classes can be added via the attribute **theme="bootstrap"** on the root element
