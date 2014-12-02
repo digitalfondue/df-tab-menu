@@ -21,35 +21,33 @@
 	</head>
 	<body>
 		<h1>df-tab-menu</h1>
-		
-		<a href="bootstrap.html">See the bootstrap theme</a>
-		
+		<div><a href="bootstrap.html">See bootstrap theme</a></div>
 		<div id="example" ng-app="digitalfondue.dftabmenu" ng-init="navigationState = 'home';menu2 = {navigationState: 'home'}">
 			<h2>Static menu</h2>
 			<p>Responsive tabs with dropdown menu</p>
-			
-			
-			<ol df-tab-menu menu-control="{{navigationState}}" more-menu-template="<span>More +</span>">
-				<li menu-item="home"><a data-ng-href="#" data-ng-click="navigationState = 'home'"><span>Home</span></a></li>
-				<li menu-item="products"><a data-ng-href="#" data-ng-click="navigationState = 'products'"><span>Products</span></a></li>
-				<li menu-item="gallery"><a data-ng-href="#" data-ng-click="navigationState = 'gallery'"><span>Gallery</span></a></li>
-				<li menu-item="sustainability"><a data-ng-href="#" data-ng-click="navigationState = 'sustainability'"><span>Sustainability</span></a></li>
-				<li menu-item="innovation"><a data-ng-href="#" data-ng-click="navigationState = 'innovation'"><span>Innovation</span></a></li>
-				<li menu-item="blog"><a data-ng-href="#" data-ng-click="navigationState = 'blog'"><span>Blog</span></a></li>
-				<li menu-item="contactus"><a data-ng-href="#" data-ng-click="navigationState = 'contactus'"><span>Contact Us</span></a></li>
-				<li menu-item="about"><a data-ng-href="#" data-ng-click="navigationState = 'about'"><span>About</span></a></li>
+			<ol df-tab-menu menu-control="{{navigationState}}">
+				<li data-menu-item="home"><a data-ng-href="#" data-ng-click="navigationState = 'home'"><span>Home</span></a></li>
+				<li data-menu-item="products"><a data-ng-href="#" data-ng-click="navigationState = 'products'"><span>Products</span></a></li>
+				<li data-menu-item="gallery"><a data-ng-href="#" data-ng-click="navigationState = 'gallery'"><span>Gallery</span></a></li>
+				<li data-menu-item="sustainability"><a data-ng-href="#" data-ng-click="navigationState = 'sustainability'"><span>Sustainability</span></a></li>
+				<li data-menu-item="innovation"><a data-ng-href="#" data-ng-click="navigationState = 'innovation'"><span>Innovation</span></a></li>
+				<li data-menu-item="blog"><a data-ng-href="#" data-ng-click="navigationState = 'blog'"><span>Blog</span></a></li>
+				<li data-menu-item="contactus"><a data-ng-href="#" data-ng-click="navigationState = 'contactus'"><span>Contact Us</span></a></li>
+				<li data-menu-item="about"><a data-ng-href="#" data-ng-click="navigationState = 'about'"><span>About</span></a></li>
+				<li data-more-menu-item><a data-ng-href="#">More +</a></li>
 			</ol>
 			
-			<p>navigation state: {{navigationState}}</p>
+			<p>navigation state: <input data-ng-model="navigationState"></p>
 			
 			<h2>Dynamic menu</h2>
 			<p>Using ng-repeat to create the menu</p>
-			<ol df-tab-menu menu-control="{{menu2.navigationState}}" more-menu-template="<span>More +</span>">
-				<li menu-item="home"><a data-ng-href="#" data-ng-click="menu2.navigationState = 'home'"><span>Home</span></a></li>
-				<li data-ng-repeat="tag in allTags" menu-item="{{tag.item}}"><a data-ng-href="#" data-ng-click="menu2.navigationState = tag.item"><span>{{tag.name}}</span></a></li>
-			</ol>
+			<ul df-tab-menu menu-control="{{menu2.navigationState}}">
+				<li data-menu-item="home"><a data-ng-href="#" data-ng-click="menu2.navigationState = 'home'"><span>Home</span></a></li>
+				<li data-ng-repeat="tag in allTags" data-menu-item="{{tag.item}}"><a data-ng-href="#" data-ng-click="menu2.navigationState = tag.item"><span>{{tag.name}}</span></a></li>
+				<li data-more-menu-item><button type="button">More +</button></li>
+			</ul>
 			
-			<p>navigation state 2: {{menu2.navigationState}}</p>
+			<p>navigation state 2: <input data-ng-model="menu2.navigationState"></p>
 			
 			<div data-ng-init="allTags = [{'item' : 'first', 'name' : 'first'}, {'item' : 'second', 'name' : 'second'}, {'item' : 'third', 'name' : 'third'}, {'item' : 'fourth', 'name' : 'fourth'}]">
 				<ul style="margin:0;padding:0">
