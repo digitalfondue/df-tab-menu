@@ -19,7 +19,6 @@
       "LICENSE",
       "package.json",
       "README.md",
-      "src",
       "node_modules",
       "examples",
       "config",
