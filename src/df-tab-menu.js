@@ -30,11 +30,11 @@
 				moreMenuElement.addClass(bootstrap('dropdown'));
 				
 				moreMenuElement.children().attr({
-						"dropdown-toggle":"",
+						"df-dropdown-toggle":"",
 						"aria-haspopup":"true",
 						"aria-expanded":"false"
 				});
-				moreMenuElement.children().addClass('dropdown-toggle');
+				moreMenuElement.children().addClass('df-dropdown-toggle');
 				
 				moreMenuElement.append('<' + baseTag + ' role=\"menu\" aria-hidden=\"true\" class=\"df-tab-menu-dropdown '+bootstrap('dropdown-menu')+'\"></' + baseTag + '>');
 				
@@ -159,13 +159,13 @@
 							if(addBootstrapTheme) {
 								angular.element(root.querySelector('li[data-more-menu-item]')).addClass('open');
 							}
-							angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).addClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'true'});
+							angular.element(root.querySelector('li[data-more-menu-item] [df-dropdown-toggle]')).addClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'true'});
 							angular.element(doc).bind('click', closeDropdown);
 						} else {
 							if(addBootstrapTheme) {
 								angular.element(root.querySelector('li[data-more-menu-item]')).removeClass('open');
 							}
-							angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'false'});;
+							angular.element(root.querySelector('li[data-more-menu-item] [df-dropdown-toggle]')).removeClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'false'});;
 							angular.element(doc).unbind('click', closeDropdown);
 						}
 					};
@@ -177,7 +177,7 @@
 						drawDropDown();
 					};
 					
-					angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).bind('click', toggleDropdown);
+					angular.element(root.querySelector('li[data-more-menu-item] [df-dropdown-toggle]')).bind('click', toggleDropdown);
 					
 					var updateActiveState = function(c) {
 						//set active state
@@ -201,7 +201,7 @@
 
 					$scope.$on('$destroy', function() {
 						wdw.unbind('resize', buildMenu);
-						angular.element(root.querySelector('li[data-more-menu-item] [dropdown-toggle]')).unbind('click', toggleDropdown);
+						angular.element(root.querySelector('li[data-more-menu-item] [df-dropdown-toggle]')).unbind('click', toggleDropdown);
 						angular.element(doc).unbind('click', closeDropdown);
 					});
 					
