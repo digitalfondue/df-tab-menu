@@ -94,6 +94,9 @@
 						var elementsSize = getElementsSize();
 						//40px: scrollbar tolerance. Not proud of this, but it works...
 						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 20;
+						if(sum > _maxWidth) {
+							return visibleItems;
+						}
 						visibleItems.push(_activeItemIndex);
 						var items = root.querySelectorAll('li[data-menu-item][role=presentation]');
 						for(var i = 0; i < items.length; i++) {
