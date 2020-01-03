@@ -164,7 +164,10 @@
 								angular.element(root.querySelector('li[data-more-menu-item]')).addClass('open');
 							}
 							angular.element(root.querySelector('li[data-more-menu-item] [df-dropdown-toggle]')).addClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'true'});
-							angular.element(doc).bind('click', closeDropdown);
+
+							setTimeout(function(){
+								angular.element(doc).bind('click', closeDropdown);
+							});
 						} else {
 							if(addBootstrapTheme) {
 								angular.element(root.querySelector('li[data-more-menu-item]')).removeClass('open');
@@ -176,7 +179,7 @@
 					
 					//dropdown controls
 					var toggleDropdown = function(e) {
-						if(e) {e.stopPropagation()};
+						// if(e) {e.stopPropagation()};
 						dropdownOpen = !dropdownOpen;
 						drawDropDown();
 					};
