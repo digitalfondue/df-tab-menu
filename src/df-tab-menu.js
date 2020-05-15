@@ -85,14 +85,18 @@
 					
 					var getMoreElementSize = function() {
 						angular.element(root.querySelector('li[data-more-menu-item]')).removeClass('ng-hide');
-						return root.querySelector('li[data-more-menu-item]').offsetWidth;
+						let _pinItemWidth = root.querySelector('li[data-pin-menu-item]') ? root.querySelector('li[data-pin-menu-item]').offsetWidth : 0;
+						return root.querySelector('li[data-more-menu-item]').offsetWidth + _pinItemWidth;
 					}
 					
 					var getVisibleItems = function(_maxWidth, _activeItemIndex) {
 						var visibleItems = [];
 						var elementsSize = getElementsSize();
 						//40px: scrollbar tolerance. Not proud of this, but it works...
-						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 40;
+						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 25;
+						if(sum > _maxWidth) {
+							return visibleItems;
+						}
 						visibleItems.push(_activeItemIndex);
 						var items = root.querySelectorAll('li[data-menu-item][role=presentation]');
 						for(var i = 0; i < items.length; i++) {
@@ -160,7 +164,10 @@
 								angular.element(root.querySelector('li[data-more-menu-item]')).addClass('open');
 							}
 							angular.element(root.querySelector('li[data-more-menu-item] [df-dropdown-toggle]')).addClass('df-tab-menu-dropdown-open').attr({'aria-expanded':'true'});
-							angular.element(doc).bind('click', closeDropdown);
+
+							setTimeout(function(){
+								angular.element(doc).bind('click', closeDropdown);
+							});
 						} else {
 							if(addBootstrapTheme) {
 								angular.element(root.querySelector('li[data-more-menu-item]')).removeClass('open');
@@ -172,7 +179,7 @@
 					
 					//dropdown controls
 					var toggleDropdown = function(e) {
-						if(e) {e.stopPropagation()};
+						// if(e) {e.stopPropagation()};
 						dropdownOpen = !dropdownOpen;
 						drawDropDown();
 					};
