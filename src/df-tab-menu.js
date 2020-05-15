@@ -93,7 +93,7 @@
 						var visibleItems = [];
 						var elementsSize = getElementsSize();
 						//40px: scrollbar tolerance. Not proud of this, but it works...
-						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 20;
+						var sum = elementsSize[_activeItemIndex] + getMoreElementSize() + 25;
 						if(sum > _maxWidth) {
 							return visibleItems;
 						}
